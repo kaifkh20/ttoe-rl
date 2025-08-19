@@ -84,7 +84,13 @@ def optimal_move(board):
 # Q-learning Agent
 # ===============================
 
-Q = {}
+
+try :
+    with open("qtable.pkl","rb"):
+        Q = pickle.load(f);
+except:
+    Q= {}
+
 alpha = 0.1      # Lower learning rate for more stable learning
 gamma = 0.9      # Discount factor
 epsilon = 0.3    # Start with lower exploration rate
@@ -126,7 +132,7 @@ def update_q_value(state, action, reward, next_state, next_moves):
 # Training Loop
 # ===============================
 
-use_smart_opponent = True    # Toggle between Random and Optimal opponent
+use_smart_opponent = False  # Toggle between Random and Optimal opponent
 episodes = 30000 if use_smart_opponent else 200000
 
 print(f"Starting training for {episodes} episodes...")
@@ -135,6 +141,8 @@ print(f"Opponent type: {'Smart (Minimax)' if use_smart_opponent else 'Random'}")
 wins = 0
 losses = 0
 draws = 0
+
+
 
 for ep in range(episodes):
     board = initialize_board()
