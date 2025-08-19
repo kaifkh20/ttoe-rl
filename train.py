@@ -85,9 +85,14 @@ def optimal_move(board):
 # ===============================
 
 
-try :
-    with open("qtable.pkl","rb"):
-        Q = pickle.load(f);
+# -------- Load Q-table --------
+try:
+    with open("qtable.pkl", "rb") as f:
+        Q = pickle.load(f)
+    print(f"✓ Loaded Q-table with {len(Q)} states")
+except FileNotFoundError:
+    print("Error: qtable.pkl not found. Please train the agent first.")
+    exit()
 except:
     Q= {}
 
@@ -133,7 +138,7 @@ def update_q_value(state, action, reward, next_state, next_moves):
 # ===============================
 
 use_smart_opponent = False  # Toggle between Random and Optimal opponent
-episodes = 30000 if use_smart_opponent else 200000
+episodes = 30000 if use_smart_opponent else 500000
 
 print(f"Starting training for {episodes} episodes...")
 print(f"Opponent type: {'Smart (Minimax)' if use_smart_opponent else 'Random'}")
