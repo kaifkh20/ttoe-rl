@@ -23,8 +23,9 @@ def convert_to_training_format(board):
 def get_state(board):
     return "".join(convert_to_training_format(board))
 
+epsilon = 0.2  # 20% chance to explore instead of exploit
+
 def best_ai_move(board):
-    """Choose best move using Q-learning (ε-greedy optional)"""
     available_moves = [i for i in range(9) if board[i] == 0]
     if not available_moves:
         return None
@@ -33,7 +34,11 @@ def best_ai_move(board):
     if state not in Q:
         Q[state] = {}
     
-    # Exploit best move
+    # 🔥 With probability ε, pick a random move (explore)
+    if random.random() < epsilon:
+        return random.choice(available_moves)
+    
+    # Otherwise exploit best known move
     q_values = [(move, Q[state].get(move, 0.0)) for move in available_moves]
     max_q = max(q_values, key=lambda x: x[1])[1]
     best_moves = [m for m, q in q_values if q == max_q]
